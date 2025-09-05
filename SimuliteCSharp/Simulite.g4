@@ -4,15 +4,14 @@ program: line* EOF;
 
 line: statement | ifBlock | whileBlock | block | functionDeclaration;
 
-statement: ( assignment|functionCall ) ';';
+statement: ( return | assignment | functionCall ) ';';
 
-ifBlock: 'if' '(' expression ')' block ('else' elseBlock);
-
-elseBlock: block | ifBlock;
+ifBlock: 'if' '(' expression ')' block ('else' block);
 
 whileBlock: WHILE '(' expression ')' block;
 
 functionDeclaration: 'function' IDENTIFIER '(' (IDENTIFIER (',' IDENTIFIER)*)? ')' block;
+
 
 block: '{' line* '}';
 
@@ -22,6 +21,8 @@ constant: INTEGER | FLOAT | STRING | BOOL | NULL;
 assignment: IDENTIFIER '=' expression;
 
 functionCall: IDENTIFIER '(' (expression (',' expression)*)? ')';
+
+return: 'return' expression;
 
 expression
     : constant                          #constantExpression

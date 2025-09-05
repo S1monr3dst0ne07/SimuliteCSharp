@@ -6,7 +6,12 @@ public class ProgramNode(INode[] lines) : INode
 	public IRuntimeValue? Evaluate(SimuliteEnvironment env)
 	{
 		IRuntimeValue? val = null;
-		lines.ToList().ForEach(line => val = line.Evaluate(env));
+		foreach (INode line in lines)
+		{
+			val = line.Evaluate(env);
+			if (line is ReturnNode) break;
+		}
+
 		return val;
 	}
 }

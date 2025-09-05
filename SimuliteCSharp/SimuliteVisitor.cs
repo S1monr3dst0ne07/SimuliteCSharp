@@ -63,6 +63,15 @@ public class SimuliteVisitor: SimuliteBaseVisitor<INode>
 		return new ComparisonNode(left, context.compareOp().GetText(), right);
 	}
 
+    public override INode VisitIfBlock(SimuliteParser.IfBlockContext context)
+    {
+		return new IfElseNode(
+			Visit(context.expression()),
+			Visit(context.block()[0]),
+			Visit(context.block()[1])
+		);
+    }
+
 	public override INode VisitFunctionCall(SimuliteParser.FunctionCallContext context)
 	{
 		return new FunctionCallNode(context.IDENTIFIER().GetText(), context.expression().Select(Visit).ToArray());
@@ -93,4 +102,8 @@ public class SimuliteVisitor: SimuliteBaseVisitor<INode>
 		return new FunctionDeclarationNode(context.IDENTIFIER()[0].GetText(), context.IDENTIFIER()[1..].Select(id => id.GetText()).ToArray(), Visit(context.block()));
 	}
 
+    public override INode VisitReturn(SimuliteParser.ReturnContext context)
+    {
+		return new ReturnNode(Visit(context.expression()));
+    }
 }
