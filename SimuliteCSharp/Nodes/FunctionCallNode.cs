@@ -22,8 +22,7 @@ public class FunctionCallNode(string identifier, INode?[] parms) : INode
 			{
 				funcEnv.AddLocal(param.Key, param.Value);
 			}
-			func.Block.Evaluate(funcEnv);
-			return null;
+			return func.Block.Evaluate(funcEnv);
 		default:
 			throw new Exception("Invalid function call, calling a variable is not a valid statement.");
 		}
