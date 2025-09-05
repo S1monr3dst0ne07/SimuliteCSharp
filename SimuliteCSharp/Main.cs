@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NDesk.Options;
+﻿using NDesk.Options;
 using SimuliteCSharp;
 
 class Program
@@ -17,11 +12,17 @@ class Program
         };
         p.Parse(args);
 
+        var root = new SimuliteEnvironment();
+        root.AddLocal("print",
+            new SimuliteCSharp.Values.RuntimeExternalFunction(
+                vs => Console.WriteLine(vs[0].Show())
+            )
+        );
+
         var source = File.ReadAllText(path);
         var ast = SimuliteApi.Parse(source);
-        var env = new SimuliteEnvironment();
 
-        ast.Evaluate(env);
+        ast.Evaluate(root);
 
     }
 }
