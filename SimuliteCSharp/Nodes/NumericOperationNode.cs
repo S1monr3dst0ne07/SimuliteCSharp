@@ -19,10 +19,10 @@ public class NumericOperationNode(INode left, string op, INode right) : INode
 
 		//interaction between float and int will type coerce the int to a float
 		if (leftVal is RuntimeInteger && rightVal is RuntimeFloat)
-			leftVal = (RuntimeFloat)leftVal;
+			leftVal = new RuntimeFloat((float)((RuntimeInteger)leftVal).Value);
 
 		if (leftVal is RuntimeFloat && rightVal is RuntimeInteger)
-			rightVal = (RuntimeFloat)rightVal;
+			rightVal = new RuntimeFloat((float)((RuntimeInteger)rightVal).Value);
 
 		//float operations
 		if (leftVal is RuntimeFloat || rightVal is RuntimeFloat)
