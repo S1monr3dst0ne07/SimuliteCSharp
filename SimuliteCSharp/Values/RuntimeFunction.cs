@@ -7,7 +7,7 @@ public class RuntimeFunction(ProgramNode block, string[] paramList, SimuliteEnvi
 	public string[] ParamList = paramList;
 	public SimuliteEnvironment ParentEnv = parentEnv;
 	
-	public string Print()
+	public string Show()
 	{
 		return $"<RuntimeFunction:{Block}>";
 	}

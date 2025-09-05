@@ -4,7 +4,7 @@ public class RuntimeString(string val) : IRuntimeValue
 {
 	public string Value = val;
 	
-	public string Print()
+	public string Show()
 	{
 		return Value;
 	}

@@ -4,7 +4,7 @@ public class RuntimeBoolean(bool val) : IRuntimeValue
 {
 	public bool Value = val;
 	
-	public string Print()
+	public string Show()
 	{
 		return Value.ToString();
 	}

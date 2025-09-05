@@ -4,7 +4,7 @@ public class RuntimeFloat(float val) : IRuntimeValue
 {
 	public float Value = val;
 	
-	public string Print()
+	public string Show()
 	{
 		return Value.ToString();
 	}

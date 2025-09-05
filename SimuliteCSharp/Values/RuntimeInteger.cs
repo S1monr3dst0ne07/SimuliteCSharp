@@ -4,7 +4,7 @@ public class RuntimeInteger(int val) : IRuntimeValue
 {
 	public int Value = val;
 
-	public string Print()
+	public string Show()
 	{
 		return Value.ToString();
 	}

@@ -2,5 +2,5 @@ namespace SimuliteCSharp.Values;
 
 public interface IRuntimeValue
 {
-	public string Print();
+	public string Show();
 }
