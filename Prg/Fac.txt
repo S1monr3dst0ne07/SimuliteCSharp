@@ -1,0 +1,17 @@
+
+
+
+function Fac(n)
+{
+    print(n);
+    if (n == 1)
+    {
+        return 1;
+    }
+    else
+    {
+        return Fac(n - 1) * n;
+    }
+}
+
+print(Fac(5));
