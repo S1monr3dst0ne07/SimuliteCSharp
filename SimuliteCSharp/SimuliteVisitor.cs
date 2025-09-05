@@ -1,5 +1,3 @@
-using Antlr4.Runtime.Misc;
-using Antlr4.Runtime.Tree;
 using SimuliteCSharp.Nodes;
 namespace SimuliteCSharp;
 
@@ -7,10 +5,10 @@ public class SimuliteVisitor: SimuliteBaseVisitor<INode>
 {
 	public override INode VisitAssignment(SimuliteParser.AssignmentContext context)
 	{
-		string name = context.IDENTIFIER().GetText();
-		INode value = Visit(context.expression());
-
-		return new AssignNode(name, value);
+		return new AssignNode(
+			context.IDENTIFIER().GetText(),
+			Visit(context.expression())
+		);
 	}
 
 	public override INode VisitConstant(SimuliteParser.ConstantContext context)
@@ -40,15 +38,19 @@ public class SimuliteVisitor: SimuliteBaseVisitor<INode>
 
 	public override INode VisitAdditionExpression(SimuliteParser.AdditionExpressionContext context)
 	{
-		INode left = Visit(context.expression(0));
-		INode right = Visit(context.expression(1));
-		return new NumericOperationNode(left, context.addOp().GetText(), right);
+		return new NumericOperationNode(
+			Visit(context.expression(0)),
+			context.addOp().GetText(),
+			Visit(context.expression(1))
+		);
 	}
 	public override INode VisitMultiplicationExpression(SimuliteParser.MultiplicationExpressionContext context)
 	{
-		INode left = Visit(context.expression(0));
-		INode right = Visit(context.expression(1));
-		return new NumericOperationNode(left, context.multOp().GetText(), right);
+		return new NumericOperationNode(
+			Visit(context.expression(0)), 
+			context.multOp().GetText(), 
+			Visit(context.expression(1))
+		);
 	}
 
 	public override INode VisitWhileBlock(SimuliteParser.WhileBlockContext context)
@@ -58,23 +60,28 @@ public class SimuliteVisitor: SimuliteBaseVisitor<INode>
 
 	public override INode VisitComparisonExpression(SimuliteParser.ComparisonExpressionContext context)
 	{
-		INode left = Visit(context.expression(0));
-		INode right = Visit(context.expression(1));
-		return new ComparisonNode(left, context.compareOp().GetText(), right);
+		return new ComparisonNode(
+			Visit(context.expression(0)), 
+			context.compareOp().GetText(), 
+			Visit(context.expression(1))
+		);
 	}
 
     public override INode VisitIfBlock(SimuliteParser.IfBlockContext context)
     {
 		return new IfElseNode(
 			Visit(context.expression()),
-			Visit(context.block()[0]),
-			Visit(context.block()[1])
+			Visit(context.block(0)),
+			Visit(context.block(1))
 		);
     }
 
 	public override INode VisitFunctionCall(SimuliteParser.FunctionCallContext context)
 	{
-		return new FunctionCallNode(context.IDENTIFIER().GetText(), context.expression().Select(Visit).ToArray());
+		return new FunctionCallNode(
+			context.IDENTIFIER().GetText(), 
+			context.expression().Select(Visit).ToArray()
+		);
 	}
 
 	public override INode VisitProgram(SimuliteParser.ProgramContext context)
@@ -99,7 +106,11 @@ public class SimuliteVisitor: SimuliteBaseVisitor<INode>
 
 	public override INode VisitFunctionDeclaration(SimuliteParser.FunctionDeclarationContext context)
 	{
-		return new FunctionDeclarationNode(context.IDENTIFIER()[0].GetText(), context.IDENTIFIER()[1..].Select(id => id.GetText()).ToArray(), Visit(context.block()));
+		return new FunctionDeclarationNode(
+			context.IDENTIFIER()[0].GetText(), 
+			context.IDENTIFIER()[1..].Select(id => id.GetText()).ToArray(), 
+			Visit(context.block())
+		);
 	}
 
     public override INode VisitReturn(SimuliteParser.ReturnContext context)
