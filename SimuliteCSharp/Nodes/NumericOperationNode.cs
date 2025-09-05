@@ -12,74 +12,44 @@ public class NumericOperationNode(INode left, string op, INode right) : INode
 		{
 			throw new Exception($"Cannot operate on null values");
 		}
-	
-		if (op == "+")
+
+
+		if (leftVal is RuntimeString && rightVal is RuntimeString)
+            return new RuntimeString(leftVal.Show() + rightVal.Show());
+
+		//interaction between float and int will type coerce the int to a float
+		if (leftVal is RuntimeInteger && rightVal is RuntimeFloat)
+			leftVal = (RuntimeFloat)leftVal;
+
+		if (leftVal is RuntimeFloat && rightVal is RuntimeInteger)
+			rightVal = (RuntimeFloat)rightVal;
+
+		//float operations
+		if (leftVal is RuntimeFloat || rightVal is RuntimeFloat)
 		{
-			switch (leftVal)
+			float l = ((RuntimeFloat)leftVal).Value;
+			float r = ((RuntimeFloat)rightVal).Value;
+			return new RuntimeFloat(op switch
 			{
-			case RuntimeFloat lf when rightVal is RuntimeFloat rf:
-				return new RuntimeFloat(lf.Value + rf.Value);
-			case RuntimeFloat lf2 when rightVal is RuntimeInteger ri2:
-				return new RuntimeFloat(lf2.Value + ri2.Value);
-			case RuntimeInteger li2 when rightVal is RuntimeFloat rf2:
-				return new RuntimeFloat(li2.Value + rf2.Value);
-			case RuntimeInteger li3 when rightVal is RuntimeInteger ri3:
-				return new RuntimeInteger(li3.Value + ri3.Value);
-			}
-
-			//STRINGS
-			if (rightVal is RuntimeString | leftVal is RuntimeString)
-				return new RuntimeString(leftVal.Show() + rightVal.Show());
-		}
-
-		if (op == "-")
-		{
-			switch (leftVal)
-			{
-			case RuntimeFloat lf when rightVal is RuntimeFloat rf:
-				return new RuntimeFloat(lf.Value - rf.Value);
-			case RuntimeFloat lf2 when rightVal is RuntimeInteger ri2:
-				return new RuntimeFloat(lf2.Value - ri2.Value);
-			case RuntimeInteger li2 when rightVal is RuntimeFloat rf2:
-				return new RuntimeFloat(li2.Value - rf2.Value);
-			case RuntimeInteger li3 when rightVal is RuntimeInteger ri3:
-				return new RuntimeInteger(li3.Value - ri3.Value);
-			}
-
-		}
-
-		if (op == "*")
-		{
-			switch (leftVal)
-			{
-			case RuntimeFloat lf when rightVal is RuntimeFloat rf:
-				return new RuntimeFloat(lf.Value * rf.Value);
-			case RuntimeFloat lf2 when rightVal is RuntimeInteger ri2:
-				return new RuntimeFloat(lf2.Value * ri2.Value);
-			case RuntimeInteger li2 when rightVal is RuntimeFloat rf2:
-				return new RuntimeFloat(li2.Value * rf2.Value);
-			case RuntimeInteger li3 when rightVal is RuntimeInteger ri3:
-				return new RuntimeInteger(li3.Value * ri3.Value);
-			}
+				"+" => l + r,
+				"-" => l - r,
+				"*" => l * r,
+				"/" => l / r,
+			});
 		}
 		
-		if (op == "/")
+		//int operations
+		if (leftVal is RuntimeInteger || rightVal is RuntimeInteger)
 		{
-			switch (leftVal)
+			int l = ((RuntimeInteger)leftVal).Value;
+			int r = ((RuntimeInteger)rightVal).Value;
+			return new RuntimeInteger(op switch
 			{
-			case RuntimeFloat lf when rightVal is RuntimeFloat rf:
-				if (rf.Value == 0) throw new DivideByZeroException("Division by zero");
-				return new RuntimeFloat(lf.Value / rf.Value);
-			case RuntimeFloat lf2 when rightVal is RuntimeInteger ri2:
-				if (ri2.Value == 0) throw new DivideByZeroException("Division by zero");
-				return new RuntimeFloat(lf2.Value / ri2.Value);
-			case RuntimeInteger li2 when rightVal is RuntimeFloat rf2:
-				if (rf2.Value == 0) throw new DivideByZeroException("Division by zero");
-				return new RuntimeFloat(li2.Value / rf2.Value);
-			case RuntimeInteger li3 when rightVal is RuntimeInteger ri3:
-				if (ri3.Value == 0) throw new DivideByZeroException("Division by zero");
-				return new RuntimeInteger(li3.Value / ri3.Value);
-			}
+				"+" => l + r,
+				"-" => l - r,
+				"*" => l * r,
+				"/" => l / r,
+			});
 		}
 	
 		throw new Exception($"Invalid numeric operation: {leftVal.GetType()} {op} {rightVal.GetType()}");
