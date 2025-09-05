@@ -6,6 +6,6 @@ public class FloatLiteralNode(float val) : INode
 
 	public IRuntimeValue? Evaluate(SimuliteEnvironment env)
 	{
-		throw new NotImplementedException();
+		return new RuntimeFloat(val);
 	}
 }
