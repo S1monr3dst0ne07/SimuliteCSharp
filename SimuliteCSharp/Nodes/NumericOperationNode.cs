@@ -29,7 +29,7 @@ public class NumericOperationNode(INode left, string op, INode right) : INode
 
 			//STRINGS
 			if (rightVal is RuntimeString | leftVal is RuntimeString)
-				return new RuntimeString(leftVal.Print() + rightVal.Print());
+				return new RuntimeString(leftVal.Show() + rightVal.Show());
 		}
 
 		if (op == "-")

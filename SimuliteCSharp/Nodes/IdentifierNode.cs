@@ -5,6 +5,6 @@ public class IdentifierNode(string val) : INode
 {
 	public IRuntimeValue? Evaluate(SimuliteEnvironment env)
 	{
-		return env.ResolveVariable(val);
+		return env.ResolveLocal(val);
 	}
 }

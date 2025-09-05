@@ -4,7 +4,7 @@ namespace SimuliteCSharp;
 public class SimuliteEnvironment
 {
 	public SimuliteEnvironment? Parent { get; private set; }
-	private Dictionary<string, IRuntimeValue> _variables = new();
+	private Dictionary<string, IRuntimeValue> locals = new();
 
 	public SimuliteEnvironment() {
 		
@@ -15,18 +15,18 @@ public class SimuliteEnvironment
 		Parent = parent;
 	}
 
-	public void AddVariable(string identifier, IRuntimeValue value)
+	public void AddLocal(string identifier, IRuntimeValue value)
 	{
-		_variables[identifier] = value;
+		locals[identifier] = value;
 	}
 	
-	public IRuntimeValue ResolveVariable(string identifier)
+	public IRuntimeValue ResolveLocal(string identifier)
 	{
-		if (_variables.TryGetValue(identifier, out IRuntimeValue? variable))
+		if (locals.TryGetValue(identifier, out IRuntimeValue? variable))
 			return variable;
 		
 		if (Parent != null)
-			return Parent.ResolveVariable(identifier);
+			return Parent.ResolveLocal(identifier);
 			
 		throw new Exception($"Variable '{identifier}' not found in scope.");
 	}

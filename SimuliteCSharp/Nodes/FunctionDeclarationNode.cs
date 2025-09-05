@@ -7,7 +7,7 @@ public class FunctionDeclarationNode(string ident, string[] parmList, INode bloc
 	{
 		if (block is not ProgramNode programBlock)
 			throw new Exception("Invalid function declaration, block is malformed.");
-		env.AddVariable(ident, new RuntimeFunction(programBlock, parmList, env));
+		env.AddLocal(ident, new RuntimeFunction(programBlock, parmList, env));
 		return null;
 	}
 }

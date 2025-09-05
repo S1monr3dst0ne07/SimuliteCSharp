@@ -7,7 +7,7 @@ public class AssignNode(string identifier, INode valueExpression) : INode
 	{
 		IRuntimeValue? val = valueExpression.Evaluate(env);
 		if (val == null) return null;
-		env.AddVariable(identifier, val);
+		env.AddLocal(identifier, val);
 		return null;
 	}
 }

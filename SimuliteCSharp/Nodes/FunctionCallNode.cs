@@ -5,7 +5,7 @@ public class FunctionCallNode(string identifier, INode?[] parms) : INode
 {
 	public IRuntimeValue? Evaluate(SimuliteEnvironment env)
 	{
-		IRuntimeValue value = env.ResolveVariable(identifier);
+		IRuntimeValue value = env.ResolveLocal(identifier);
 		switch (value)
 		{
 		case RuntimeExternalFunction exFunc:
@@ -20,7 +20,7 @@ public class FunctionCallNode(string identifier, INode?[] parms) : INode
 				.ToDictionary(val => val.first, val => val.second);
 			foreach (KeyValuePair<string, IRuntimeValue?> param in paramMap)
 			{
-				funcEnv.AddVariable(param.Key, param.Value);
+				funcEnv.AddLocal(param.Key, param.Value);
 			}
 			func.Block.Evaluate(funcEnv);
 			return null;
