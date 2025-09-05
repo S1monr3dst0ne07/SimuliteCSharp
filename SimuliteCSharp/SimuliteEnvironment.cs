@@ -4,7 +4,7 @@ namespace SimuliteCSharp;
 public class SimuliteEnvironment
 {
 	public SimuliteEnvironment? Parent { get; private set; }
-	private Dictionary<string, IRuntimeValue> locals = new();
+	private Dictionary<string, IRuntimeValue> Locals = new();
 
 	public SimuliteEnvironment() {
 		
@@ -17,12 +17,12 @@ public class SimuliteEnvironment
 
 	public void AddLocal(string identifier, IRuntimeValue value)
 	{
-		locals[identifier] = value;
+		Locals[identifier] = value;
 	}
 	
 	public IRuntimeValue ResolveLocal(string identifier)
 	{
-		if (locals.TryGetValue(identifier, out IRuntimeValue? variable))
+		if (Locals.TryGetValue(identifier, out IRuntimeValue? variable))
 			return variable;
 		
 		if (Parent != null)
