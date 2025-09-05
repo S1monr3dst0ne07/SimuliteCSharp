@@ -1,3 +1,4 @@
+using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using SimuliteCSharp.Nodes;
 namespace SimuliteCSharp;
@@ -43,6 +44,12 @@ public class SimuliteVisitor: SimuliteBaseVisitor<INode>
 		INode right = Visit(context.expression(1));
 		return new NumericOperationNode(left, context.addOp().GetText(), right);
 	}
+	public override INode VisitMultiplicationExpression(SimuliteParser.MultiplicationExpressionContext context)
+	{
+		INode left = Visit(context.expression(0));
+		INode right = Visit(context.expression(1));
+		return new NumericOperationNode(left, context.multOp().GetText(), right);
+	}
 
 	public override INode VisitWhileBlock(SimuliteParser.WhileBlockContext context)
 	{
@@ -85,4 +92,5 @@ public class SimuliteVisitor: SimuliteBaseVisitor<INode>
 	{
 		return new FunctionDeclarationNode(context.IDENTIFIER()[0].GetText(), context.IDENTIFIER()[1..].Select(id => id.GetText()).ToArray(), Visit(context.block()));
 	}
+
 }
