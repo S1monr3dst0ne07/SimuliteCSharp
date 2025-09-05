@@ -1,4 +1,5 @@
 using SimuliteCSharp.Nodes;
+using System.Globalization;
 namespace SimuliteCSharp;
 
 public class SimuliteVisitor: SimuliteBaseVisitor<INode>
@@ -18,9 +19,9 @@ public class SimuliteVisitor: SimuliteBaseVisitor<INode>
 		
 		if (context.STRING() is { } s)
 			return new StringLiteralNode(s.GetText()[1..^1]);
-		
+
 		if (context.FLOAT() is { } f)
-			return new FloatLiteralNode(float.Parse(f.GetText()));
+			return new FloatLiteralNode(float.Parse(f.GetText(), CultureInfo.InvariantCulture));
 		
 		if (context.BOOL() is { } b)
 			return new BooleanLiteralNode(b.GetText() == "true");
